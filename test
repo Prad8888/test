@@ -1,0 +1,48 @@
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.testng.Assert;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+public class SpringBootAppTest {
+
+    private WebDriver driver;
+
+    @BeforeTest
+    public void setUp() {
+        // Set the path to the Chrome WebDriver executable
+        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver.exe");
+
+        // Configure Chrome options (you can customize this)
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--start-maximized"); // Maximize the browser window
+
+        // Initialize the WebDriver with the configured options
+        driver = new ChromeDriver(options);
+
+        // Navigate to your Spring Boot application's URL
+        driver.get("http://localhost:8080/");
+    }
+
+    @Test
+    public void testHomePage() {
+        // Find the web element with the "Hello, World!" text
+        WebElement helloElement = driver.findElement(By.xpath("//body[contains(., 'Hello, World!')]"));
+
+        // Verify that the element is displayed and contains the expected text
+        Assert.assertTrue(helloElement.isDisplayed());
+        Assert.assertEquals(helloElement.getText(), "Hello, World!");
+    }
+
+    @AfterTest
+    public void tearDown() {
+        // Close the browser
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+}
